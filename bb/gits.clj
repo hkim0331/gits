@@ -4,7 +4,7 @@
 (require '[babashka.fs :as fs])
 (require '[babashka.process :as ps])
 
-(def ^:private version "0.1.1")
+(def ^:private version "0.1.2")
 
 (defn usage
   "--help で呼ばれる。"
