@@ -5,6 +5,7 @@
 - `gits.clj --version` はエラーだが、捕まえないと。
 
 ## 0.1.3-snapshot
+- added bump-version.sh
 
 ## 0.1.2 - 2023-10-01
 - add an example, `gits.clj`
