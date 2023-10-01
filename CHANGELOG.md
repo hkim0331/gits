@@ -1,4 +1,4 @@
-# gits
+# gits.clj
 
 ## Unreleased
 
@@ -7,6 +7,7 @@
 - git-dir?
 - git-dirs
 - usage
+- Makefile (to ~/bin/gits.clj)
 
 ## 0.1.0 - 2023-10-01
 - initialized repository
