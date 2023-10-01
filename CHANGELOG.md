@@ -1,6 +1,13 @@
 # gits.clj
 
 ## Unreleased
+- `gits.clj pull .`  を `gits.clj pull` と間違うこと(. を忘れる)が多い。
+
+
+## 0.1.3-snapshot
+
+## 0.1.2 - 2023-10-01
+- add an example, `gits.clj`
 
 ## 0.1.1 - 2023-10-01
 - git flow init
