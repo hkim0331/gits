@@ -1,5 +1,8 @@
 # gits.clj
 
+複数の git 管理されたプロジェクトを一つのフォルダにまとめている時、
+一度に、パラレルに、git status や git pull を実行したい。
+
 ## SYNOPSIS
 gits [options] [something] [dir]
 
@@ -16,9 +19,10 @@ gits 単独では、`gits --parallel status .` のように働く。
 - gits pull .
   作業ディレクトリ中の複数の git フォルダを並列に pull する。
 
+
 ```shell
 m24~/projects(:|✔)
-% time ./gits.clj pull .
+% time ./gits.clj --parallel pull .
 (./py99 ... Already up to date.
  ./2023-python ... Already up to date.
  ./docker ... Already up to date.
