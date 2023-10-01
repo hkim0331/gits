@@ -4,7 +4,7 @@
 (require '[babashka.fs :as fs])
 (require '[babashka.process :as ps])
 
-(def ^:private version "0.1.2")
+(def ^:private version "0.1.3")
 
 (defn usage
   "--help で呼ばれる。"
@@ -84,7 +84,8 @@ gits 単独では、`gits --parallel status .` のように働く。
 
 (defn -main
   []
-  (if (= "--help" (first *command-line-args*))
+  (if (or (= "--help" (first *command-line-args*))
+          (= "--version" (first *command-line-args*)))
     (usage)
     (println (apply gits *command-line-args*))))
 
