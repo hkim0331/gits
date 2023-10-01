@@ -4,15 +4,17 @@
 (require '[babashka.fs :as fs])
 (require '[babashka.process :as ps])
 
+(def ^:private version "0.1.1")
+
 (defn usage
   "--help で呼ばれる。"
   []
-  (println "# gits.clj
-
-## SYNOPSIS
-gits [options] [something] [dir]
+  (println "# gits.clj " version
+           "\n\n## SYNOPSIS
+gits [options] [git-command] [dir]
 
 dir 内の git dirs に対し、git something を実行する。
+options, git-command, dir の順番は変えられない。
 gits 単独では、`gits --parallel status .` のように働く。
 
 ## EXAMPLES
