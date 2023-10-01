@@ -3,6 +3,8 @@
 ## Unreleased
 - `gits.clj pull .`  を `gits.clj pull` と間違うこと(. を忘れる)が多い。
 - `gits.clj --version` はエラーだが、捕まえないと。
+- gits.clj よりも gits の方が良くないか？
+- gits よりも par-gits とか？
 
 ## 0.1.3-snapshot
 - added bump-version.sh
