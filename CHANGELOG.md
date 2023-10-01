@@ -6,6 +6,7 @@
 - git flow init
 - git-dir?
 - git-dirs
+- usage
 
 ## 0.1.0 - 2023-10-01
 - initialized repository

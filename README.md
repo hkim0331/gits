@@ -1,28 +1,53 @@
-# gits
+# gits.clj
 
 ## SYNOPSIS
-
 gits [options] [something] [dir]
 
 dir 内の git dirs に対し、git something を実行する。
+gits 単独では、`gits --parallel status .` のように働く。
 
-* --paralell or -p で並列実行、
-* --serial or -s で逐次実行。
+## EXAMPLES
+- gits --paralell status ~/projects
+  ~/projects 内の複数の git フォルダの状態を並列にチェックする。
 
-デフォルトは、
+- gits -s fetch .
+  作業ディレクトリ中の複数の git フォルダを逐次 fetch する。
 
-gits --parallel status .
+- gits pull .
+  作業ディレクトリ中の複数の git フォルダを並列に pull する。
 
-## examples
+```shell
+m24~/projects(:|✔)
+% time ./gits.clj pull .
+(./py99 ... Already up to date.
+ ./2023-python ... Already up to date.
+ ./docker ... Already up to date.
+ ./dotfiles ... Already up to date.
+ ./the-little-schemer ... Already up to date.
+ ./qa ... Already up to date.
+ ./clj-repl ... Already up to date.
+ ./scratch ... Already up to date.
+ ./l22 ... Already up to date.
+ ./typing-ex ... Already up to date.
+ ./wil ... Already up to date.
+ ./jtask ... Already up to date.
+)
+./gits.clj pull .  0.58s user 0.30s system 38% cpu 2.266 total
 
-~/projects 内の複数の git フォルダの状態を並列にチェックする。
-
-    % gits --paralell status ~/projects
-
-作業ディレクトリ中の複数の git フォルダを逐次 fetch する。
-
-    % gits -s fetch .
-
-作業ディレクトリ中の複数の git フォルダを並列に pull する。
-
-    % gits -p pull
+m24~/projects(:|✔)
+% time ./gits.clj --serial pull .
+(./py99 ... Already up to date.
+ ./2023-python ... Already up to date.
+ ./docker ... Already up to date.
+ ./dotfiles ... Already up to date.
+ ./the-little-schemer ... Already up to date.
+ ./qa ... Already up to date.
+ ./clj-repl ... Already up to date.
+ ./scratch ... Already up to date.
+ ./l22 ... Already up to date.
+ ./typing-ex ... Already up to date.
+ ./wil ... Already up to date.
+ ./jtask ... Already up to date.
+)
+./gits.clj --serial pull .  0.88s user 0.39s system 6% cpu 19.731 total
+```
