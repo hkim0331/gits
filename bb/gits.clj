@@ -84,7 +84,8 @@ gits 単独では、`gits --parallel status .` のように働く。
 
 (defn -main
   []
-  (if (= "--help" (first *command-line-args*))
+  (if (or (= "--help" (first *command-line-args*))
+          (= "--version" (first *command-line-args*)))
     (usage)
     (println (apply gits *command-line-args*))))
 

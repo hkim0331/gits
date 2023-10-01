@@ -2,7 +2,7 @@
 
 ## Unreleased
 - `gits.clj pull .`  を `gits.clj pull` と間違うこと(. を忘れる)が多い。
-
+- `gits.clj --version` はエラーだが、捕まえないと。
 
 ## 0.1.3-snapshot
 
