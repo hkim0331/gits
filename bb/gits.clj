@@ -4,31 +4,31 @@
 (require '[babashka.fs :as fs])
 (require '[babashka.process :as ps])
 
-(def ^:private version "0.1.4")
+(def ^:private version "0.1.5")
 
 (defn usage
   "--help で呼ばれる。"
   []
-  (println "# gits.clj " version
+  (println "# gits " version
            "\n\n## SYNOPSIS
-gits.clj [options] [git-command] [dir]
+gits [options] [git-command] [dir]
 
 dir 内の git dirs に対し、git something を実行する。
 options, git-command, dir の順番は変えられない。
 gits 単独では、`gits --parallel status .` のように働く。
 
 ## EXAMPLES
-- gits.clj --paralell status ~/projects
+- gits --paralell status ~/projects
   ~/projects 内の複数の git フォルダの状態を並列にチェックする。
 
-- gits.clj -s fetch .
+- gits -s fetch .
   作業ディレクトリ中の複数の git フォルダを逐次 fetch する。
 
-- gits.clj pull .
+- gits pull .
   作業ディレクトリ中の複数の git フォルダを並列に pull する。
 
-- gits.clj
-  gits.clj --parallel status . のように働く。"))
+- gits
+  gits --parallel status . のように働く。"))
 
 (defn abbrev
   "もし、s が clean で終わっていたら clean を返す"
