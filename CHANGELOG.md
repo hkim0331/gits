@@ -1,11 +1,12 @@
 # gits.clj
 
 ## Unreleased
-- `gits.clj pull .`  を `gits.clj pull` と間違うこと(. を忘れる)が多い。
-- `gits.clj --version` はエラーだが、捕まえないと。
+- `gits pull .`  を `gits pull` と間違うこと(. を忘れる)が多い。
 
-## 0.1.3-snapshot
+
+## 0.1.4 - 2023-10-02
 - added bump-version.sh
+- インストール先スクリプト名から .clj をとって、gits とした。
 
 ## 0.1.2 - 2023-10-01
 - add an example, `gits.clj`

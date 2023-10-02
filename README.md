@@ -4,21 +4,25 @@
 一度に、パラレルに、git status や git pull を実行したい。
 
 ## SYNOPSIS
+
 gits [options] [something] [dir]
 
 dir 内の git dirs に対し、git something を実行する。
-gits 単独では、`gits --parallel status .` のように働く。
+gits.clj 単独では、`gits --parallel status .` のように働く。
 
 ## EXAMPLES
-- gits --paralell status ~/projects
+
+- gits.clj --paralell status ~/projects
   ~/projects 内の複数の git フォルダの状態を並列にチェックする。
 
-- gits -s fetch .
+- gits.clj -s fetch .
   作業ディレクトリ中の複数の git フォルダを逐次 fetch する。
 
-- gits pull .
+- gits.clj pull .
   作業ディレクトリ中の複数の git フォルダを並列に pull する。
 
+- gits.clj
+  gits.clj --paralell status . のように動く。
 
 ```shell
 m24~/projects(:|✔)
