@@ -3,7 +3,7 @@
 (ns gits)
 (require '[babashka.fs :as fs])
 (require '[babashka.process :as ps])
-(require '[taoensso.timbre :as timbre :refer [debug info]])
+(require '[taoensso.timbre :refer [info]])
 
 (def ^:private version "0.2.0-snapshot")
 
@@ -42,7 +42,7 @@ gits 単独では、`gits --parallel status .` のように働く。
 (defn git
   "ディレクトリを引数に取り、git verb を実行する関数を返す。"
   [verb]
-  (info "git" verb)
+  ;; (info "git" verb)
   (fn [dir]
     (let [ret (ps/shell {:dir dir :out :string :err :string}
                         (str "git " verb))]
