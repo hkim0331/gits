@@ -12,7 +12,7 @@
 (defn usage
   "--help で呼ばれる。"
   []
-  (println "# gits " version
+  (println "gits version " version
            "\n\n## SYNOPSIS
 gits [options] [git-command] [dir]
 
