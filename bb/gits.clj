@@ -9,7 +9,7 @@
 ;; FIXME: must set up timbre
 (timbre/merge-config! {:min-level :info})
 
-(def ^:private version "0.2.0")
+(def ^:private version "0.2.2")
 
 (defn usage
   "--help で呼ばれる。"
