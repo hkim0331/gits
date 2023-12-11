@@ -48,7 +48,7 @@ gits 単独では、`gits --parallel status .` のように働く。
   [verb]
   (fn [dir]
     ;; (timbre/info "git" dir)
-    (println "git" (str dir))
+    ;; (println "git" (str dir))
     (let [ret (ps/shell {:dir dir :out :string :err :string}
                         (str "git " verb))]
       (str dir " ... " (-> (:out ret) abbrev)))))
@@ -84,8 +84,8 @@ gits 単独では、`gits --parallel status .` のように働く。
      (doall (mapv (git verb) (git-dirs dir)))
      (try
        (doall (pmap (git verb) (git-dirs dir)))
-       (catch Exception _
-         ;; (println (.getMessage e))
+       (catch Exception e
+         (println (.getMessage e))
          (println "try `gits --serial status`"))))))
 
 (defn -main
