@@ -2,12 +2,13 @@
 
 ## Unreleased
 - `gits pull .`  を `gits pull` と間違うこと(. を忘れる)が多い。
-- `gits pull *` が正しいコマンドラインではないか？2023-10-14
 - gits が正常終了しなかったのはどのディレクトリか？
-- help, version 表示
 
-## 0.2.0-snapshot
+
+## 0.2.0 - 2023-12-11
 - log
+- help, version 表示
+- try `gits --serial branch .` and so on.
 
 ## 0.1.5 - 2023-10-02
 - ヘルプが gits.cj のままなのを修正した。
