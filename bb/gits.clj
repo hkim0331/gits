@@ -9,7 +9,7 @@
 ;; FIXME: must set up timbre
 (timbre/merge-config! {:min-level :info})
 
-(def ^:private version "0.2.0")
+(def ^:private version "0.2.2")
 
 (defn usage
   "--help で呼ばれる。"
@@ -48,10 +48,15 @@ gits 単独では、`gits --parallel status .` のように働く。
   [verb]
   (fn [dir]
     ;; (timbre/info "git" dir)
-    (println "git" (str dir))
-    (let [ret (ps/shell {:dir dir :out :string :err :string}
-                        (str "git " verb))]
-      (str dir " ... " (-> (:out ret) abbrev)))))
+    ;; (println "git" (str dir))
+    (try
+      (let [ret (ps/shell {:dir dir :out :string :err :string}
+                          (str "git " verb))]
+        (str dir " ... " (-> (:out ret) abbrev)))
+      (catch Exception e
+        (println "git" dir)
+        (println (.getMessage e))))))
+
 
 (comment
   ((git "status") ".")
@@ -82,11 +87,7 @@ gits 単独では、`gits --parallel status .` のように働く。
   ;;  (timbre/debug "gits" (git-dirs dir))
    (if (or (= opt "--serial") (= opt "-s"))
      (doall (mapv (git verb) (git-dirs dir)))
-     (try
-       (doall (pmap (git verb) (git-dirs dir)))
-       (catch Exception _
-         ;; (println (.getMessage e))
-         (println "try `gits --serial status`"))))))
+     (doall (pmap (git verb) (git-dirs dir))))))
 
 (defn -main
   [& args]
