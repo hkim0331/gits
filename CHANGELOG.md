@@ -4,7 +4,7 @@
 - `gits pull .`  を `gits pull` と間違うこと(. を忘れる)が多い。
 - `gits pull *` が正しいコマンドラインではないか？2023-10-14
 - gits が正常終了しなかったのはどのディレクトリか？
-
+- help, version 表示
 
 ## 0.2.0-snapshot
 - log

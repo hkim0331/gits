@@ -1,11 +1,13 @@
 #!/usr/bin/env bb
 
-(ns gits)
+(ns gits
+  (:require [taoensso.timbre :as timbre]))
 (require '[babashka.fs :as fs])
 (require '[babashka.process :as ps])
 (require '[taoensso.timbre :as timbre])
 
 ;; FIXME: must set up timbre
+(timbre/merge-config! {:min-level :info})
 
 (def ^:private version "0.2.0-snapshot")
 
@@ -45,7 +47,7 @@ gits 単独では、`gits --parallel status .` のように働く。
   "ディレクトリを引数に取り、git verb を実行する関数を返す。"
   [verb]
   (fn [dir]
-    ;; (info "git" dir)
+    ;; (timbre/info "git" dir)
     (let [ret (ps/shell {:dir dir :out :string :err :string}
                         (str "git " verb))]
       (str dir " ... " (-> (:out ret) abbrev)))))
@@ -80,18 +82,18 @@ gits 単独では、`gits --parallel status .` のように働く。
   ([dir] (gits "status" dir))
   ([verb dir] (gits "--parallel" verb dir))
   ([opt verb dir]
-  ;;  (info "gits" opt verb dir)
-  ;;  (info (git-dirs dir))
+   (timbre/debug "gits" opt verb dir)
+   (timbre/debug "gits" (git-dirs dir))
    (if (or (= opt "--serial") (= opt "-s"))
-     (doall (map (git verb) (git-dirs dir)))
-     (doall (pmap (git verb) (git-dirs dir))))))
-
-(comment
-  (gits)
-  :rcf)
+     (doall (mapv (git verb) (git-dirs dir)))
+     (try
+       (doall (pmap (git verb) (git-dirs dir)))
+       (catch Exception e
+         (println (.getMessage e))
+         (println "try gits --serial status ."))))))
 
 (defn -main
-  []
+  [& args]
   (if (or (= "--help" (first *command-line-args*))
           (= "--version" (first *command-line-args*)))
     (usage)
