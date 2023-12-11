@@ -1,15 +1,20 @@
 #!/usr/bin/env bb
 
-(ns gits)
-(require '[babashka.fs :as fs])
-(require '[babashka.process :as ps])
+(ns gits
+  (:require
+   [babashka.fs :as fs]
+   [babashka.process :as ps]
+   [taoensso.timbre :as timbre]))
 
-(def ^:private version "0.1.5")
+;; FIXME: must set up timbre
+(timbre/merge-config! {:min-level :info})
+
+(def ^:private version "0.2.0")
 
 (defn usage
   "--help で呼ばれる。"
   []
-  (println "# gits " version
+  (println "gits version " version
            "\n\n## SYNOPSIS
 gits [options] [git-command] [dir]
 
@@ -42,6 +47,8 @@ gits 単独では、`gits --parallel status .` のように働く。
   "ディレクトリを引数に取り、git verb を実行する関数を返す。"
   [verb]
   (fn [dir]
+    ;; (timbre/info "git" dir)
+    (println "git" (str dir))
     (let [ret (ps/shell {:dir dir :out :string :err :string}
                         (str "git " verb))]
       (str dir " ... " (-> (:out ret) abbrev)))))
@@ -54,11 +61,6 @@ gits 単独では、`gits --parallel status .` のように働く。
   "dir が git 配下かを dir/.git が存在するかで判定する。"
   [dir]
   (fs/exists? (str dir "/.git")))
-
-(comment
-  (git-dir? ".")
-  (git-dir? "/Users/hkim/ramdisk")
-  :rcf)
 
 (defn git-dirs
   "dir 以下の subdir で、git 配下のディレクトリだけを返す。"
@@ -76,14 +78,18 @@ gits 単独では、`gits --parallel status .` のように働く。
   ([dir] (gits "status" dir))
   ([verb dir] (gits "--parallel" verb dir))
   ([opt verb dir]
-  ;;  (println "gits" opt verb dir)
-  ;;  (println (git-dirs dir))
+  ;;  (timbre/debug "gits" opt verb dir)
+  ;;  (timbre/debug "gits" (git-dirs dir))
    (if (or (= opt "--serial") (= opt "-s"))
-     (doall (map (git verb) (git-dirs dir)))
-     (doall (pmap (git verb) (git-dirs dir))))))
+     (doall (mapv (git verb) (git-dirs dir)))
+     (try
+       (doall (pmap (git verb) (git-dirs dir)))
+       (catch Exception _
+         ;; (println (.getMessage e))
+         (println "try `gits --serial status`"))))))
 
 (defn -main
-  []
+  [& args]
   (if (or (= "--help" (first *command-line-args*))
           (= "--version" (first *command-line-args*)))
     (usage)
