@@ -1,5 +1,4 @@
 #!/usr/bin/env bb
-
 (ns gits
   (:require
    [babashka.fs :as fs]
@@ -11,11 +10,11 @@
 
 (def ^:private version "0.2.2")
 
-(defn usage
-  "--help で呼ばれる。"
-  []
-  (println "gits version " version
-           "\n\n## SYNOPSIS
+(defn print-version []
+  (println "gits" version))
+
+(defn usage []
+  (println "\n\n## SYNOPSIS
 gits [options] [git-command] [dir]
 
 dir 内の git dirs に対し、git something を実行する。
@@ -26,14 +25,20 @@ gits 単独では、`gits --parallel status .` のように働く。
 - gits --paralell status ~/projects
   ~/projects 内の複数の git フォルダの状態を並列にチェックする。
 
-- gits -s fetch .
+- gits --serial fetch .
   作業ディレクトリ中の複数の git フォルダを逐次 fetch する。
 
 - gits pull .
   作業ディレクトリ中の複数の git フォルダを並列に pull する。
 
 - gits
-  gits --parallel status . のように働く。"))
+  gits --parallel status . のように働く。
+
+- gits --help
+  ヘルプを表示。
+
+- gits --version
+  バージョンナンバーを表示。"))
 
 (defn abbrev
   "もし、s が clean で終わっていたら clean を返す"
@@ -47,28 +52,21 @@ gits 単独では、`gits --parallel status .` のように働く。
   "ディレクトリを引数に取り、git verb を実行する関数を返す。"
   [verb]
   (fn [dir]
-    ;; (timbre/info "git" dir)
-    ;; (println "git" (str dir))
     (try
       (let [ret (ps/shell {:dir dir :out :string :err :string}
                           (str "git " verb))]
         (str dir " ... " (-> (:out ret) abbrev)))
       (catch Exception e
-        (println "git" dir)
+        (println "gits/git:" (str dir))
         (println (.getMessage e))))))
 
-
-(comment
-  ((git "status") ".")
-  :rcf)
-
 (defn git-dir?
-  "dir が git 配下かを dir/.git が存在するかで判定する。"
+  "judge if `dir` is under git to check the existance of `dir/.git`."
   [dir]
   (fs/exists? (str dir "/.git")))
 
 (defn git-dirs
-  "dir 以下の subdir で、git 配下のディレクトリだけを返す。"
+  "returns the list of git controlled subdirs under `dir`."
   [dir]
   (filter git-dir? (fs/list-dir (fs/expand-home dir))))
 
@@ -79,21 +77,19 @@ gits 単独では、`gits --parallel status .` のように働く。
   :rcf)
 
 (defn gits
-  ([] (gits "."))
-  ([dir] (gits "status" dir))
+  ([] (gits "--parallel" "status" "."))
+  ([dir] (gits "--parallel" "status" dir))
   ([verb dir] (gits "--parallel" verb dir))
   ([opt verb dir]
-  ;;  (timbre/debug "gits" opt verb dir)
-  ;;  (timbre/debug "gits" (git-dirs dir))
-   (if (or (= opt "--serial") (= opt "-s"))
+   (if (= opt "--serial")
      (doall (mapv (git verb) (git-dirs dir)))
      (doall (pmap (git verb) (git-dirs dir))))))
 
 (defn -main
-  [& args]
-  (if (or (= "--help" (first *command-line-args*))
-          (= "--version" (first *command-line-args*)))
-    (usage)
+  [& _]
+  (case (first *command-line-args*)
+    "--version" (print-version)
+    "--help" (usage)
     (println (apply gits *command-line-args*))))
 
 (-main)
