@@ -14,10 +14,12 @@
   (println "gits" version))
 
 (defn usage []
-  (println "\n\n## SYNOPSIS
+  (println "## SYNOPSIS
 gits [options] [git-command] [dir]
 
-dir 内の git dirs に対し、git something を実行する。
+dir 内に見つかる git 配下のプロジェクトそれぞれの dirs で
+`git git-command` を並列に実行する。
+--serial オプションで逐次実行。
 options, git-command, dir の順番は変えられない。
 gits 単独では、`gits --parallel status .` のように働く。
 
@@ -41,7 +43,8 @@ gits 単独では、`gits --parallel status .` のように働く。
   バージョンナンバーを表示。"))
 
 (defn abbrev
-  "もし、s が clean で終わっていたら clean を返す"
+  "if the argument `s` contains 'nothing to commit', return 'clean',
+   else returns the `s`."
   [s]
   ;; (println "s=[" s "]")
   (if (re-find #"nothing to commit" s)
@@ -49,7 +52,9 @@ gits 単独では、`gits --parallel status .` のように働く。
     s))
 
 (defn git
-  "ディレクトリを引数に取り、git verb を実行する関数を返す。"
+  "returns a function which execute `git verb` on `dir`.
+   the `dir` is an argument of the returned function.
+   if git errored, show the error messages."
   [verb]
   (fn [dir]
     (try
@@ -61,7 +66,7 @@ gits 単独では、`gits --parallel status .` のように働く。
         (println (.getMessage e))))))
 
 (defn git-dir?
-  "judge if `dir` is under git to check the existance of `dir/.git`."
+  "checking the existance of `dir/.git`, judge if `dir` is under git."
   [dir]
   (fs/exists? (str dir "/.git")))
 
