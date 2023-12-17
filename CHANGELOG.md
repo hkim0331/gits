@@ -1,7 +1,8 @@
 # gits.clj
 
 ## Unreleased
-- `gits pull .`  を `gits pull` と間違うこと(. を忘れる)が多い。
+- --dir オプション: git 配下のサブディレクトリをリスト。
+
 
 ## 0.3.1 - 2023-12-13
 - improve docs.
